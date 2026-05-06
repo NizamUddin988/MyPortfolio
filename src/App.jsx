@@ -262,7 +262,7 @@ function App() {
       tech: ["React", "CSS", "JavaScript", "BootStrap", "Figma", "Vercel"],
       desc: "A responsive portfolio website showcasing projects, skills and experience with modern design principles.",
       demo: "#",
-      code: "#"
+      code: "https://github.com/NizamUddin988/MyPortfolio"
     },
     {
       id: 4,
