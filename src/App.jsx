@@ -229,14 +229,15 @@ function App() {
   ];
 
   const certificates = [
-    { id: 1, title: "Java Completion Course", issuer: "Intellipaat", desc: "Java Certification", filePath: "/certificates/intellipad.jpeg" },
-    { id: 2, title: "AI Completion Course", issuer: "Infosys", desc: "AI Certification", filePath: "/certificates/infosys.pdf" },
-    { id: 3, title: "Java Programming", issuer: "HackerRank", desc: "Java Development", filePath: "https://www.hackerrank.com/certificates/301ef5423e38" },
-    { id: 4, title: "React Specialization", issuer: "HackerRank", desc: "Front-End Development with React", filePath: "https://www.hackerrank.com/certificates/f3cdc48cedc3" },
-    { id: 5, title: "Python Programming", issuer: "HackerRank", desc: "Python Certification", filePath: "https://www.hackerrank.com/certificates/15089465d6a5" },
-    { id: 6, title: "JavaScript Programming", issuer: "HackerRank", desc: "JavaScript Certification", filePath: "https://www.hackerrank.com/certificates/c0ec388f6e0e" },
-    { id: 7, title: "Problem Solving", issuer: "HackerRank", desc: "Problem Solver Certification", filePath: "https://www.hackerrank.com/certificates/4c5f8ff73600" },
-    { id: 8, title: "Java & SQL" , issuer:"VSTAND4U",desc:"Coding Certificate",filePath:"/certificates/vs4u.png"}
+    {id:  1, title:"Fullstack development using Java and Python", issuer:"Vstan4U Technolgies", desc:"Full-Stack Certification", filePath: "/certificates/intern.jpeg"},
+    { id: 2, title: "Java Completion Course", issuer: "Intellipaat", desc: "Java Certification", filePath: "/certificates/intellipad.jpeg" },
+    { id: 3, title: "AI Completion Course", issuer: "Infosys", desc: "AI Certification", filePath: "/certificates/infosys.pdf" },
+    { id: 4, title: "Java Programming", issuer: "HackerRank", desc: "Java Development", filePath: "https://www.hackerrank.com/certificates/301ef5423e38" },
+    { id: 5, title: "React Specialization", issuer: "HackerRank", desc: "Front-End Development with React", filePath: "https://www.hackerrank.com/certificates/f3cdc48cedc3" },
+    { id: 6, title: "Python Programming", issuer: "HackerRank", desc: "Python Certification", filePath: "https://www.hackerrank.com/certificates/15089465d6a5" },
+    { id: 7, title: "JavaScript Programming", issuer: "HackerRank", desc: "JavaScript Certification", filePath: "https://www.hackerrank.com/certificates/c0ec388f6e0e" },
+    { id: 8, title: "Problem Solving", issuer: "HackerRank", desc: "Problem Solver Certification", filePath: "https://www.hackerrank.com/certificates/4c5f8ff73600" },
+    { id: 9, title: "Java & SQL" , issuer:"Vstan4U Technolgies",desc:"Coding Certificate",filePath:"/certificates/vs4u.png"}
   ];
 
   const projects = [
