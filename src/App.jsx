@@ -418,7 +418,7 @@ function App() {
               
               <div className="hero-image">
                 <div className='me'>
-                  <img src="./developer.png" alt="Developer" className='img' />
+                  <img src="./Developer.png" alt="Developer" className='img' />
                 </div>
               </div>
 
