@@ -246,7 +246,7 @@ function App() {
       title: "House Rental Platform",
       tech: ["Java", "Spring-Boot", "HTML", "CSS", "JS", "MySQL", "Render", "Railway", "Vercel"],
       desc: "House Rental Platform is a full-stack web application built using Spring Boot that enables users to register securely with OTP-based email verification and manage rental listings.",
-      demo: "notfound.html",
+      demo: "404.html",
       code: "https://github.com/NizamUddin988/House-Rental-Platform"
     },
     {
