@@ -421,7 +421,7 @@ function App() {
                   <img src="./Developer.png" alt="Developer" className='img' />
                 </div>
               </div>
-
+{/* 
               <button 
                 onClick={like} 
                 style={{
@@ -443,7 +443,7 @@ function App() {
                 }}
               >
                 {liked ? "❤️" : "🤍"} {likes}
-              </button>   
+              </button>    */}
               <div className="scroll">↓ Scroll Down ↓</div>
             </div>
           </div>
