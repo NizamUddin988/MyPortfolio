@@ -1,16 +1,80 @@
-# React + Vite
+# 🌐 Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive personal portfolio website built with React to showcase my projects, technical skills, internship experience, and achievements. The website serves as a central hub where recruiters and developers can explore my work and connect with me.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Responsive design for desktop, tablet, and mobile devices
+- Smooth navigation between sections
+- Project showcase with GitHub and Live Demo links
+- Technical Skills section
+- Internship & Education details
+- Achievements and Certifications
+- Contact section with social media links
+- Fast loading and optimized performance
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- React.js
+- HTML5
+- CSS3
+- JavaScript
 
-## Expanding the ESLint configuration
+### Deployment
+- Vercel
+----
+## ⚙️ Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Clone the Repository
+
+```bash
+git clone https://github.com/NizamUddin988/portfolio.git
+```
+
+### Navigate to the Project
+
+```bash
+cd portfolio
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Start the Development Server
+
+```bash
+npm start
+```
+
+The application will run on:
+
+```
+http://localhost:3000
+```
+
+## 🌍 Live Demo
+
+**Portfolio:** https://self-present.vercel.app/
+
+## 📈 Future Enhancements
+
+- Dark/Light Theme Toggle
+- Blog Section
+- Resume Download Analytics
+- Project Search & Filters
+- Animated Loading Screen
+- Visitor Counter
+
+## 👨‍💻 Author
+
+**Nizam Uddin**
+
+- GitHub: https://github.com/NizamUddin988
+- LinkedIn: https://www.linkedin.com/in/nizam-uddin-55404527b/
+- Portfolio: https://self-present.vercel.app/
+
+------------------------------------------------------------------------------------------------------------------------------------------
