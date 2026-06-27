@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="browser.png">
+    <title>House Rental Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 32px;
+            color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .add-property-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-property-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .location-info i {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .location-info span {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e2e8f0;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            color: #718096;
+            font-size: 16px;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-state {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-state h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .card-state .count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .card-city {
+            padding: 20px;
+        }
+
+        .card-city h4 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .availability {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .availability.high { background: #d4edda; color: #155724; }
+        .availability.medium { background: #fff3cd; color: #856404; }
+        .availability.low { background: #f8d7da; color: #721c24; }
+
+        .city-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .house-card {
+            padding: 0;
+        }
+
+        .house-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .house-info {
+            padding: 20px;
+        }
+
+        .house-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .house-specs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+
+        .house-specs span {
+            background: #f7fafc;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .house-address {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .house-address i {
+            color: #667eea;
+            margin-top: 2px;
+        }
+
+        .house-owner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .owner-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .owner-info h4 {
+            font-size: 14px;
+            margin: 0;
+            color: #2d3748;
+        }
+
+        .owner-info p {
+            font-size: 12px;
+            color: #718096;
+            margin: 0;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .contact-btn {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .back-btn:hover {
+            background: #edf2f7;
+            transform: translateX(-5px);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #718096;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #764ba2;
+        }
+
+        .breadcrumb i {
+            font-size: 12px;
+        }
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-tag {
+            background: #f7fafc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-tag.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header, .main-content {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            .page-title h2 {
+                font-size: 24px;
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>House Rental Explorer</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="add-property-btn" onclick="openAddPropertyModal()">
+                        <i class="fas fa-plus"></i> Add Property
+                    </button>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>India</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" 
+                           id="citySearch" 
+                           class="search-input" 
+                           placeholder="Search for city, state, or house type...">
+                    <button onclick="searchCity()" class="search-btn">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content" id="mainContent">
+           
+        </div>
+    </div>
+
+
+    <div class="modal" id="addPropertyModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-home"></i> Add New Property</h3>
+            <form id="propertyForm" onsubmit="addNewProperty(event)">
+                <div class="form-group">
+                    <label for="propertyType">Property Type</label>
+                    <select id="propertyType" required>
+                        <option value="">Select Type</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Bungalow">Bungalow</option>
+                        <option value="Cottage">Cottage</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Studio">Studio</option>
+                        <option value="Penthouse">Penthouse</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" placeholder="Enter State" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="Enter City" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Full Address</label>
+                    <textarea id="address" rows="3" placeholder="Enter complete address" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rent">Monthly Rent (₹)</label>
+                    <input type="number" id="rent" placeholder="e.g., 25000" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bhk">BHK Configuration</label>
+                    <select id="bhk" required>
+                        <option value="">Select</option>
+                        <option value="1 BHK">1 BHK</option>
+                        <option value="2 BHK">2 BHK</option>
+                        <option value="3 BHK">3 BHK</option>
+                        <option value="4 BHK">4 BHK</option>
+                        <option value="5+ BHK">5+ BHK</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="area">Carpet Area (sq ft)</label>
+                    <input type="number" id="area" placeholder="e.g., 950" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ownerName">Owner Name</label>
+                    <input type="text" id="ownerName" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ownerPhone">Contact Number</label>
+                    <input type="tel" id="ownerPhone" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ownerEmail">Email Address</label>
+                    <input type="email" id="ownerEmail" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageUrl">Property Image URL</label>
+                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" required>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeAddPropertyModal()">Cancel</button>
+                    <button type="submit" class="submit-btn">Add Property</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const housesData = {
+            "Apartment": {
+                "states": {
+                    "Karnataka": {
+                        "cities": {
+                            "Bangalore": {
+                                availability: "low", 
+                                count: 78,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Skyline Apartments, Koramangala 5th Block",
+                                        rent: "₹25,000/month",
+                                        bhk: "2 BHK",
+                                        area: "950 sq ft",
+                                        owner: {
+                                            name: "Rajesh Kumar",
+                                            phone: "9876543210",
+                                            email: "rajesh.kumar@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                                        address: "Elite Residency, HSR Layout Sector 2",
+                                        rent: "₹32,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1200 sq ft",
+                                        owner: {
+                                            name: "Priya Sharma",
+                                            phone: "9876543211",
+                                            email: "priya.sharma@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                                        address: "Tech Park Residency, Whitefield",
+                                        rent: "₹28,000/month",
+                                        bhk: "2 BHK",
+                                        area: "1050 sq ft",
+                                        owner: {
+                                            name: "Amit Patel",
+                                            phone: "9876543212",
+                                            email: "amit.patel@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/67.jpg",
+                                            verified: false
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Garden City Apartments, Indiranagar",
+                                        rent: "₹35,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1350 sq ft",
+                                        owner: {
+                                            name: "Sunita Reddy",
+                                            phone: "9876543213",
+                                            email: "sunita.reddy@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/26.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            },
+                            "Mysore": {
+                                availability: "medium",
+                                count: 23,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Royal Heritage Homes, VV Mohalla",
+                                        rent: "₹18,000/month",
+                                        bhk: "2 BHK",
+                                        area: "850 sq ft",
+                                        owner: {
+                                            name: "Vikram Singh",
+                                            phone: "9876543214",
+                                            email: "vikram.singh@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            },
+                            "Kolar": {
+                                availability: "medium",
+                                count: 15,
+                                houses: [
+                                    {
+                                        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtjt08dR-wp7FsAzWjOFy-j9shrHNmKEcGIA&s",
+                                        address: "Swarna Griha, Narsapur, IT Area",
+                                        rent: "₹20,000/month",
+                                        bhk: "2 BHK",
+                                        area: "800 sq ft",
+                                        owner: {
+                                            name: "Karthik M",
+                                            phone: "9876543215",
+                                            email: "karthik.m@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/55.jpg",
+                                            verified: false
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Maharashtra": {
+                        "cities": {
+                            "Mumbai": {
+                                availability: "medium", 
+                                count: 56,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400",
+                                        address: "Ocean View Apartments, Bandra West",
+                                        rent: "₹65,000/month",
+                                        bhk: "2 BHK",
+                                        area: "850 sq ft",
+                                        owner: {
+                                            name: "Rohan Mehta",
+                                            phone: "9876543216",
+                                            email: "rohan.mehta@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Marine Drive Residency, Churchgate",
+                                        rent: "₹85,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1100 sq ft",
+                                        owner: {
+                                            name: "Neha Kapoor",
+                                            phone: "9876543217",
+                                            email: "neha.kapoor@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/33.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            },
+                            "Pune": {
+                                availability: "high", 
+                                count: 67,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Green Valley Society, Kothrud",
+                                        rent: "₹18,000/month",
+                                        bhk: "1 BHK",
+                                        area: "650 sq ft",
+                                        owner: {
+                                            name: "Suresh Iyer",
+                                            phone: "9876543218",
+                                            email: "suresh.iyer@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+                                            verified: false
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                                        address: "Tech Park Society, Hinjewadi",
+                                        rent: "₹22,000/month",
+                                        bhk: "2 BHK",
+                                        area: "950 sq ft",
+                                        owner: {
+                                            name: "Deepa Nair",
+                                            phone: "9876543219",
+                                            email: "deepa.nair@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/55.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            },
+                            "Nagpur": {
+                                availability: "high", 
+                                count: 34,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                                        address: "Orange City Apartments, Civil Lines",
+                                        rent: "₹15,000/month",
+                                        bhk: "2 BHK",
+                                        area: "900 sq ft",
+                                        owner: {
+                                            name: "Arjun Verma",
+                                            phone: "9876543220",
+                                            email: "arjun.verma@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/65.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Delhi": {
+                        "cities": {
+                            "New Delhi": {
+                                availability: "medium", 
+                                count: 89,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Connaught Place Apartments",
+                                        rent: "₹45,000/month",
+                                        bhk: "2 BHK",
+                                        area: "1000 sq ft",
+                                        owner: {
+                                            name: "Ravi Shankar",
+                                            phone: "9876543221",
+                                            email: "ravi.shankar@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/35.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                                        address: "South Delhi Luxury Apartments",
+                                        rent: "₹55,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1250 sq ft",
+                                        owner: {
+                                            name: "Meera Desai",
+                                            phone: "9876543222",
+                                            email: "meera.desai@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Tamil Nadu": {
+                        "cities": {
+                            "Chennai": {
+                                availability: "high", 
+                                count: 72,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                                        address: "Beach View Apartments, Besant Nagar",
+                                        rent: "₹28,000/month",
+                                        bhk: "2 BHK",
+                                        area: "950 sq ft",
+                                        owner: {
+                                            name: "Srinivasan Iyer",
+                                            phone: "9876543223",
+                                            email: "srinivasan.iyer@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/25.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "IT Corridor Residency, OMR",
+                                        rent: "₹25,000/month",
+                                        bhk: "2 BHK",
+                                        area: "900 sq ft",
+                                        owner: {
+                                            name: "Lakshmi Narayanan",
+                                            phone: "9876543224",
+                                            email: "lakshmi.n@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/35.jpg",
+                                            verified: false
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Bungalow": {
+                "states": {
+                    "Goa": {
+                        "cities": {
+                            "North Goa": {
+                                availability: "medium", 
+                                count: 28,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                                        address: "Beachside Bungalow, Calangute",
+                                        rent: "₹85,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1800 sq ft",
+                                        owner: {
+                                            name: "Fernando Gomes",
+                                            phone: "9876543225",
+                                            email: "fernando.g@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/85.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400",
+                                        address: "Portuguese Style Villa, Anjuna",
+                                        rent: "₹1,20,000/month",
+                                        bhk: "4 BHK",
+                                        area: "2200 sq ft",
+                                        owner: {
+                                            name: "Maria Rodrigues",
+                                            phone: "9876543226",
+                                            email: "maria.r@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/85.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            },
+                            "South Goa": {
+                                availability: "high", 
+                                count: 32,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+                                        address: "Heritage Bungalow, Margao",
+                                        rent: "₹65,000/month",
+                                        bhk: "3 BHK",
+                                        area: "1600 sq ft",
+                                        owner: {
+                                            name: "Antonio Fernandes",
+                                            phone: "9876543227",
+                                            email: "antonio.f@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/95.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Kerala": {
+                        "cities": {
+                            "Kochi": {
+                                availability: "medium", 
+                                count: 24,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Traditional Kerala Bungalow, Fort Kochi",
+                                        rent: "₹75,000/month",
+                                        bhk: "4 BHK",
+                                        area: "2000 sq ft",
+                                        owner: {
+                                            name: "George Thomas",
+                                            phone: "9876543228",
+                                            email: "george.t@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/15.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Cottage": {
+                "states": {
+                    "Himachal Pradesh": {
+                        "cities": {
+                            "Shimla": {
+                                availability: "high", 
+                                count: 45,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+                                        address: "Mountain Cottage, Mashobra",
+                                        rent: "₹22,000/month",
+                                        bhk: "2 BHK",
+                                        area: "800 sq ft",
+                                        owner: {
+                                            name: "Ramesh Thakur",
+                                            phone: "9876543229",
+                                            email: "ramesh.thakur@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Snow View Cottage, Kufri",
+                                        rent: "₹28,000/month",
+                                        bhk: "3 BHK",
+                                        area: "950 sq ft",
+                                        owner: {
+                                            name: "Sunita Devi",
+                                            phone: "9876543230",
+                                            email: "sunita.devi@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/15.jpg",
+                                            verified: false
+                                        }
+                                    }
+                                ]
+                            },
+                            "Manali": {
+                                availability: "high", 
+                                count: 38,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                                        address: "River View Cottage, Old Manali",
+                                        rent: "₹25,000/month",
+                                        bhk: "2 BHK",
+                                        area: "850 sq ft",
+                                        owner: {
+                                            name: "Vikram Singh",
+                                            phone: "9876543231",
+                                            email: "vikram.s@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/8.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Uttarakhand": {
+                        "cities": {
+                            "Dehradun": {
+                                availability: "medium", 
+                                count: 29,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400",
+                                        address: "Valley View Cottage, Mussoorie Road",
+                                        rent: "₹20,000/month",
+                                        bhk: "2 BHK",
+                                        area: "750 sq ft",
+                                        owner: {
+                                            name: "Anil Rawat",
+                                            phone: "9876543232",
+                                            email: "anil.rawat@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/18.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Villa": {
+                "states": {
+                    "Goa": {
+                        "cities": {
+                            "South Goa": {
+                                availability: "high", 
+                                count: 42,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400",
+                                        address: "Luxury Villa, Palolem Beach",
+                                        rent: "₹1,20,000/month",
+                                        bhk: "4 BHK",
+                                        area: "2800 sq ft",
+                                        owner: {
+                                            name: "Carlos Silva",
+                                            phone: "9876543233",
+                                            email: "carlos.silva@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/28.jpg",
+                                            verified: true
+                                        }
+                                    },
+                                    {
+                                        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400",
+                                        address: "Beachfront Villa, Colva",
+                                        rent: "₹95,000/month",
+                                        bhk: "3 BHK",
+                                        area: "2200 sq ft",
+                                        owner: {
+                                            name: "Isabella Pereira",
+                                            phone: "9876543234",
+                                            email: "isabella.p@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/women/28.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Rajasthan": {
+                        "cities": {
+                            "Jaipur": {
+                                availability: "medium", 
+                                count: 31,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                                        address: "Rajwada Villa, Civil Lines",
+                                        rent: "₹85,000/month",
+                                        bhk: "4 BHK",
+                                        area: "2500 sq ft",
+                                        owner: {
+                                            name: "Rajveer Singh",
+                                            phone: "9876543235",
+                                            email: "rajveer.singh@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/38.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Studio House": {
+                "states": {
+                    "Karnataka": {
+                        "cities": {
+                            "Bangalore": {
+                                availability: "high", 
+                                count: 56,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                                        address: "Studio Apartments, MG Road",
+                                        rent: "₹15,000/month",
+                                        bhk: "Studio",
+                                        area: "450 sq ft",
+                                        owner: {
+                                            name: "Sanjay Mehta",
+                                            phone: "9876543236",
+                                            email: "sanjay.mehta@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/48.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "Maharashtra": {
+                        "cities": {
+                            "Mumbai": {
+                                availability: "low", 
+                                count: 34,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400",
+                                        address: "Compact Studio, Andheri West",
+                                        rent: "₹35,000/month",
+                                        bhk: "Studio",
+                                        area: "400 sq ft",
+                                        owner: {
+                                            name: "Rahul Jain",
+                                            phone: "9876543237",
+                                            email: "rahul.jain@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/58.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Separate House": {
+                "states": {
+                    "Delhi": {
+                        "cities": {
+                            "New Delhi": {
+                                availability: "low", 
+                                count: 18,
+                                houses: [
+                                    {
+                                        image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                                        address: "Sky Penthouse, Gurgaon",
+                                        rent: "₹2,50,000/month",
+                                        bhk: "4 BHK",
+                                        area: "3200 sq ft",
+                                        owner: {
+                                            name: "Vikram Malhotra",
+                                            phone: "9876543238",
+                                            email: "vikram.m@example.com",
+                                            avatar: "https://randomuser.me/api/portraits/men/68.jpg",
+                                            verified: true
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "Duplex": {
+    "states": {
+        "Maharashtra": {
+            "cities": {
+                "Mumbai": {
+                    availability: "medium",
+                    count: 32,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Luxury Duplex, Bandra West, Mumbai",
+                            rent: "₹1,85,000/month",
+                            bhk: "4 BHK",
+                            area: "2200 sq ft",
+                            owner: {
+                                name: "Aakash Mehta",
+                                phone: "9876543290",
+                                email: "aakash.mehta@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/71.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Sea View Duplex, Juhu, Mumbai",
+                            rent: "₹2,25,000/month",
+                            bhk: "4 BHK",
+                            area: "2600 sq ft",
+                            owner: {
+                                name: "Neha Shah",
+                                phone: "9876543291",
+                                email: "neha.shah@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/72.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Modern Duplex, Andheri East, Mumbai",
+                            rent: "₹1,65,000/month",
+                            bhk: "3 BHK",
+                            area: "1850 sq ft",
+                            owner: {
+                                name: "Rajiv Kumar",
+                                phone: "9876543292",
+                                email: "rajiv.k@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/73.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                },
+                "Pune": {
+                    availability: "high",
+                    count: 28,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Garden Duplex, Koregaon Park, Pune",
+                            rent: "₹95,000/month",
+                            bhk: "3 BHK",
+                            area: "1750 sq ft",
+                            owner: {
+                                name: "Priyanka Joshi",
+                                phone: "9876543293",
+                                email: "priyanka.j@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/74.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Nagpur": {
+                    availability: "medium",
+                    count: 15,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Spacious Duplex, Civil Lines, Nagpur",
+                            rent: "₹75,000/month",
+                            bhk: "3 BHK",
+                            area: "1650 sq ft",
+                            owner: {
+                                name: "Sanjay Gupta",
+                                phone: "9876543294",
+                                email: "sanjay.g@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Karnataka": {
+            "cities": {
+                "Bangalore": {
+                    availability: "high",
+                    count: 45,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Duplex Villa, Whitefield, Bangalore",
+                            rent: "₹1,20,000/month",
+                            bhk: "4 BHK",
+                            area: "2100 sq ft",
+                            owner: {
+                                name: "Arjun Reddy",
+                                phone: "9876543295",
+                                email: "arjun.r@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/76.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Elite Duplex, Indiranagar, Bangalore",
+                            rent: "₹1,35,000/month",
+                            bhk: "4 BHK",
+                            area: "2300 sq ft",
+                            owner: {
+                                name: "Kavita Shetty",
+                                phone: "9876543296",
+                                email: "kavita.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/77.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Mysore": {
+                    availability: "medium",
+                    count: 12,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Heritage Duplex, Mysore",
+                            rent: "₹68,000/month",
+                            bhk: "3 BHK",
+                            area: "1550 sq ft",
+                            owner: {
+                                name: "Mohan Das",
+                                phone: "9876543297",
+                                email: "mohan.d@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/78.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Delhi": {
+            "cities": {
+                "New Delhi": {
+                    availability: "medium",
+                    count: 25,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Luxury Duplex, Greater Kailash, Delhi",
+                            rent: "₹1,95,000/month",
+                            bhk: "4 BHK",
+                            area: "2400 sq ft",
+                            owner: {
+                                name: "Vikram Singh",
+                                phone: "9876543298",
+                                email: "vikram.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/79.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Gujarat": {
+            "cities": {
+                "Ahmedabad": {
+                    availability: "high",
+                    count: 22,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Modern Duplex, Satellite, Ahmedabad",
+                            rent: "₹82,000/month",
+                            bhk: "3 BHK",
+                            area: "1700 sq ft",
+                            owner: {
+                                name: "Nilesh Patel",
+                                phone: "9876543299",
+                                email: "nilesh.p@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/80.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+},
+"Mansion": {
+    "states": {
+        "Maharashtra": {
+            "cities": {
+                "Mumbai": {
+                    availability: "low",
+                    count: 8,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Sea Front Mansion, Malabar Hill, Mumbai",
+                            rent: "₹5,50,000/month",
+                            bhk: "6 BHK",
+                            area: "5500 sq ft",
+                            owner: {
+                                name: "Rahul Birla",
+                                phone: "9876543300",
+                                email: "rahul.b@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/81.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Heritage Mansion, Colaba, Mumbai",
+                            rent: "₹4,80,000/month",
+                            bhk: "5 BHK",
+                            area: "4800 sq ft",
+                            owner: {
+                                name: "Anita Godrej",
+                                phone: "9876543301",
+                                email: "anita.g@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/82.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Pune": {
+                    availability: "medium",
+                    count: 6,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Luxury Mansion, Kalyani Nagar, Pune",
+                            rent: "₹3,20,000/month",
+                            bhk: "5 BHK",
+                            area: "4200 sq ft",
+                            owner: {
+                                name: "Sachin Pawar",
+                                phone: "9876543302",
+                                email: "sachin.p@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/83.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Rajasthan": {
+            "cities": {
+                "Jaipur": {
+                    availability: "medium",
+                    count: 10,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Royal Mansion, Civil Lines, Jaipur",
+                            rent: "₹3,80,000/month",
+                            bhk: "6 BHK",
+                            area: "5200 sq ft",
+                            owner: {
+                                name: "Maharaj Singh",
+                                phone: "9876543303",
+                                email: "maharaj.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/84.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Udaipur": {
+                    availability: "low",
+                    count: 5,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Lake View Mansion, Udaipur",
+                            rent: "₹4,20,000/month",
+                            bhk: "5 BHK",
+                            area: "4800 sq ft",
+                            owner: {
+                                name: "Arvind Mewar",
+                                phone: "9876543304",
+                                email: "arvind.m@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/85.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Uttar Pradesh": {
+            "cities": {
+                "Lucknow": {
+                    availability: "medium",
+                    count: 7,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Nawabi Mansion, Gomti Nagar, Lucknow",
+                            rent: "₹2,90,000/month",
+                            bhk: "5 BHK",
+                            area: "4500 sq ft",
+                            owner: {
+                                name: "Tariq Ali",
+                                phone: "9876543305",
+                                email: "tariq.a@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/86.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "West Bengal": {
+            "cities": {
+                "Kolkata": {
+                    availability: "low",
+                    count: 6,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Colonial Mansion, Alipore, Kolkata",
+                            rent: "₹3,50,000/month",
+                            bhk: "5 BHK",
+                            area: "5000 sq ft",
+                            owner: {
+                                name: "Raja Banerjee",
+                                phone: "9876543306",
+                                email: "raja.b@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/87.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+},
+"Row House": {
+    "states": {
+        "Maharashtra": {
+            "cities": {
+                "Pune": {
+                    availability: "high",
+                    count: 45,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Row House Society, Wakad, Pune",
+                            rent: "₹55,000/month",
+                            bhk: "3 BHK",
+                            area: "1450 sq ft",
+                            owner: {
+                                name: "Suresh Kulkarni",
+                                phone: "9876543307",
+                                email: "suresh.k@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/88.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Garden Row House, Hinjewadi, Pune",
+                            rent: "₹62,000/month",
+                            bhk: "3 BHK",
+                            area: "1550 sq ft",
+                            owner: {
+                                name: "Meena Deshmukh",
+                                phone: "9876543308",
+                                email: "meena.d@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/89.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Navi Mumbai": {
+                    availability: "high",
+                    count: 38,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Row House Complex, Vashi, Navi Mumbai",
+                            rent: "₹68,000/month",
+                            bhk: "3 BHK",
+                            area: "1500 sq ft",
+                            owner: {
+                                name: "Prakash Patil",
+                                phone: "9876543309",
+                                email: "prakash.p@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/90.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Gujarat": {
+            "cities": {
+                "Surat": {
+                    availability: "high",
+                    count: 42,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Modern Row House, Vesu, Surat",
+                            rent: "₹48,000/month",
+                            bhk: "3 BHK",
+                            area: "1400 sq ft",
+                            owner: {
+                                name: "Dinesh Shah",
+                                phone: "9876543310",
+                                email: "dinesh.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/91.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Row House Society, Adajan, Surat",
+                            rent: "₹52,000/month",
+                            bhk: "3 BHK",
+                            area: "1480 sq ft",
+                            owner: {
+                                name: "Komal Patel",
+                                phone: "9876543311",
+                                email: "komal.p@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/92.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Ahmedabad": {
+                    availability: "high",
+                    count: 50,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Row House Township, Bopal, Ahmedabad",
+                            rent: "₹58,000/month",
+                            bhk: "4 BHK",
+                            area: "1650 sq ft",
+                            owner: {
+                                name: "Rajesh Modi",
+                                phone: "9876543312",
+                                email: "rajesh.m@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/93.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Delhi NCR": {
+            "cities": {
+                "Noida": {
+                    availability: "high",
+                    count: 35,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Row House Complex, Sector 62, Noida",
+                            rent: "₹65,000/month",
+                            bhk: "3 BHK",
+                            area: "1520 sq ft",
+                            owner: {
+                                name: "Ankur Sharma",
+                                phone: "9876543313",
+                                email: "ankur.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/94.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Gurgaon": {
+                    availability: "high",
+                    count: 32,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Row House Society, Sector 56, Gurgaon",
+                            rent: "₹72,000/month",
+                            bhk: "3 BHK",
+                            area: "1580 sq ft",
+                            owner: {
+                                name: "Priya Kapoor",
+                                phone: "9876543314",
+                                email: "priya.k@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/95.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Karnataka": {
+            "cities": {
+                "Bangalore": {
+                    availability: "high",
+                    count: 40,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Row House Community, Electronic City, Bangalore",
+                            rent: "₹58,000/month",
+                            bhk: "3 BHK",
+                            area: "1480 sq ft",
+                            owner: {
+                                name: "Srinivas Murthy",
+                                phone: "9876543315",
+                                email: "srinivas.m@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/96.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+},
+"Farm House": {
+    "states": {
+        "Maharashtra": {
+            "cities": {
+                "Lonavala": {
+                    availability: "medium",
+                    count: 25,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Luxury Farm House, Lonavala Valley",
+                            rent: "₹95,000/month",
+                            bhk: "4 BHK",
+                            area: "3500 sq ft",
+                            landArea: "2 Acres",
+                            owner: {
+                                name: "Shashank Joshi",
+                                phone: "9876543316",
+                                email: "shashank.j@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/97.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Organic Farm House, Near Bushy Dam, Lonavala",
+                            rent: "₹1,20,000/month",
+                            bhk: "4 BHK",
+                            area: "3800 sq ft",
+                            landArea: "3 Acres",
+                            owner: {
+                                name: "Nisha Patil",
+                                phone: "9876543317",
+                                email: "nisha.p@example.com",
+                                avatar: "https://randomuser.me/api/portraits/women/98.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Alibaug": {
+                    availability: "high",
+                    count: 32,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Beach Farm House, Alibaug",
+                            rent: "₹1,50,000/month",
+                            bhk: "5 BHK",
+                            area: "4200 sq ft",
+                            landArea: "1.5 Acres",
+                            owner: {
+                                name: "Vikas Desai",
+                                phone: "9876543318",
+                                email: "vikas.d@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/99.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                },
+                "Karjat": {
+                    availability: "high",
+                    count: 28,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Valley Farm House, Karjat",
+                            rent: "₹85,000/month",
+                            bhk: "3 BHK",
+                            area: "2800 sq ft",
+                            landArea: "2.5 Acres",
+                            owner: {
+                                name: "Ramesh Gawde",
+                                phone: "9876543319",
+                                email: "ramesh.g@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/100.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Delhi NCR": {
+            "cities": {
+                "Sohna": {
+                    availability: "high",
+                    count: 35,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Luxury Farm House, Sohna Road, Gurgaon",
+                            rent: "₹1,80,000/month",
+                            bhk: "5 BHK",
+                            area: "5000 sq ft",
+                            landArea: "2 Acres",
+                            owner: {
+                                name: "Gaurav Mittal",
+                                phone: "9876543320",
+                                email: "gaurav.m@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+                                verified: true
+                            }
+                        },
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Premium Farm House, Sohna",
+                            rent: "₹2,00,000/month",
+                            bhk: "5 BHK",
+                            area: "5500 sq ft",
+                            landArea: "2.5 Acres",
+                            owner: {
+                                name: "Karan Bhatia",
+                                phone: "9876543321",
+                                email: "karan.b@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Rajasthan": {
+            "cities": {
+                "Jaipur": {
+                    availability: "medium",
+                    count: 22,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?w=400",
+                            address: "Heritage Farm House, Jaipur",
+                            rent: "₹1,40,000/month",
+                            bhk: "4 BHK",
+                            area: "4500 sq ft",
+                            landArea: "3 Acres",
+                            owner: {
+                                name: "Ratan Singh",
+                                phone: "9876543322",
+                                email: "ratan.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Punjab": {
+            "cities": {
+                "Chandigarh": {
+                    availability: "medium",
+                    count: 18,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
+                            address: "Luxury Farm House, Chandigarh",
+                            rent: "₹1,20,000/month",
+                            bhk: "4 BHK",
+                            area: "4000 sq ft",
+                            landArea: "2 Acres",
+                            owner: {
+                                name: "Gurpreet Singh",
+                                phone: "9876543323",
+                                email: "gurpreet.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+                                verified: false
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Karnataka": {
+            "cities": {
+                "Bangalore Rural": {
+                    availability: "high",
+                    count: 24,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400",
+                            address: "Farm House, Devanahalli, Bangalore",
+                            rent: "₹1,10,000/month",
+                            bhk: "4 BHK",
+                            area: "3800 sq ft",
+                            landArea: "2 Acres",
+                            owner: {
+                                name: "Ravi Shastri",
+                                phone: "9876543324",
+                                email: "ravi.s@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "Uttarakhand": {
+            "cities": {
+                "Dehradun": {
+                    availability: "high",
+                    count: 20,
+                    houses: [
+                        {
+                            image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400",
+                            address: "Mountain Farm House, Dehradun",
+                            rent: "₹95,000/month",
+                            bhk: "3 BHK",
+                            area: "3200 sq ft",
+                            landArea: "1.5 Acres",
+                            owner: {
+                                name: "Vikram Rawat",
+                                phone: "9876543325",
+                                email: "vikram.r@example.com",
+                                avatar: "https://randomuser.me/api/portraits/men/6.jpg",
+                                verified: true
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
+        };
+
+        let navigationHistory = [];
+        let currentHouseType = null;
+        let currentState = null;
+        let currentCity = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedHouse = localStorage.getItem("selectedHouse");
+            console.log(selectedHouse)
+            
+            if (selectedHouse && housesData[selectedHouse]) {
+                currentHouseType = selectedHouse;
+                showStatesForHouse(selectedHouse);
+            } else {
+                showWelcomePage();
+            }
+        });
+
+        function showWelcomePage() {
+            const content = document.getElementById('mainContent');
+            content.innerHTML = `
+                <div class="page-title">
+                    <h2>Find Your Perfect Home</h2>
+                    <p>Discover houses across India with our comprehensive rental explorer</p>
+                </div>
+                
+                <div class="empty-state">
+                    <i class="fas fa-home"></i>
+                    <h3>Browse Available Properties</h3>
+                    <p>Select a house type or use search to find your dream rental home</p>
+                    <button class="back-btn" onclick="showStatesForHouse('Apartment')">
+                        <i class="fas fa-building"></i> Start Browsing
+                    </button>
+                </div>
+            `;
+        }
+        function showStatesForHouse(houseType) {
+            currentHouseType = houseType;
+            const houseData = housesData[houseType];
+            const content = document.getElementById('mainContent');
+            
+            let html = `
+                <div class="page-title">
+                    <h2>${houseType} Rentals</h2>
+                    <p>Browse available states for ${houseType.toLowerCase()} rentals</p>
+                </div>
+                
+                <div class="filter-tags">
+                    <div class="filter-tag active">
+                        <i class="fas fa-building"></i> ${houseType}
+                    </div>
+                    <div class="filter-tag">
+                        <i class="fas fa-map"></i> ${Object.keys(houseData.states).length} States
+                    </div>
+                    <div class="filter-tag">
+                        <i class="fas fa-home"></i> ${getTotalProperties(houseType)} Properties
+                    </div>
+                </div>
+                
+                <div class="cards-container">
+            `;
+            
+            for (const [stateName, stateData] of Object.entries(houseData.states)) {
+                const totalCities = Object.keys(stateData.cities).length;
+                const totalHouses = Object.values(stateData.cities).reduce((sum, city) => sum + city.count, 0);
+                
+                html += `
+                    <div class="card" onclick="showCitiesForState('${houseType}', '${stateName}')">
+                        <div class="card-state">
+                            <h3>${stateName}</h3>
+                            <div class="count">${totalCities} Cities</div>
+                        </div>
+                        <div class="card-city">
+                            <div class="city-stats">
+                                <span><i class="fas fa-home"></i> ${totalHouses} Properties</span>
+                                <span><i class="fas fa-city"></i> ${totalCities} Cities</span>
+                            </div>
+                            <p style="color: #718096; font-size: 14px; margin-top: 10px;">
+                                Click to view available cities
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            content.innerHTML = html;
+            addToHistory({type: 'states', houseType});
+        }
+
+        function showCitiesForState(houseType, stateName) {
+            currentState = stateName;
+            const stateData = housesData[houseType].states[stateName];
+            const content = document.getElementById('mainContent');
+            
+            let html = `
+                <div class="breadcrumb">
+                    <a href="javascript:void(0)" onclick="showStatesForHouse('${houseType}')">
+                        <i class="fas fa-chevron-left"></i> Back to States
+                    </a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>${stateName}</span>
+                </div>
+                
+                <div class="page-title">
+                    <h2>${houseType} in ${stateName}</h2>
+                    <p>Available cities with rental properties</p>
+                </div>
+                
+                <div class="filter-tags">
+                    <div class="filter-tag">
+                        <i class="fas fa-building"></i> ${houseType}
+                    </div>
+                    <div class="filter-tag active">
+                        <i class="fas fa-map-marker-alt"></i> ${stateName}
+                    </div>
+                </div>
+                
+                <div class="cards-container">
+            `;
+            
+            for (const [cityName, cityData] of Object.entries(stateData.cities)) {
+                html += `
+                    <div class="card" onclick="showHousesInCity('${houseType}', '${stateName}', '${cityName}')">
+                        <div class="card-city">
+                            <h4>${cityName}</h4>
+                            <div class="availability ${cityData.availability}">
+                                ${cityData.availability.toUpperCase()} AVAILABILITY
+                            </div>
+                            <div class="city-stats">
+                                <span><i class="fas fa-home"></i> ${cityData.count} Properties</span>
+                                <span><i class="fas fa-tag"></i> ${getPriceRange(cityData.houses)}</span>
+                            </div>
+                            <p style="color: #718096; font-size: 14px; margin-top: 10px;">
+                                Click to view ${cityData.count} available properties
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            content.innerHTML = html;
+            addToHistory({type: 'cities', houseType, stateName});
+        }
+
+        function showHousesInCity(houseType, stateName, cityName) {
+            currentCity = cityName;
+            const cityData = housesData[houseType].states[stateName].cities[cityName];
+            const content = document.getElementById('mainContent');
+            
+            let html = `
+                <div class="breadcrumb">
+                    <a href="javascript:void(0)" onclick="showStatesForHouse('${houseType}')">
+                        <i class="fas fa-chevron-left"></i> States
+                    </a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="javascript:void(0)" onclick="showCitiesForState('${houseType}', '${stateName}')">
+                        ${stateName}
+                    </a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>${cityName}</span>
+                </div>
+                
+                <div class="page-title">
+                    <h2>${houseType} in ${cityName}, ${stateName}</h2>
+                    <p>${cityData.count} properties available • ${cityData.availability} availability</p>
+                </div>
+                
+                <div class="filter-tags">
+                    <div class="filter-tag">
+                        <i class="fas fa-building"></i> ${houseType}
+                    </div>
+                    <div class="filter-tag">
+                        <i class="fas fa-map-marker-alt"></i> ${stateName}
+                    </div>
+                    <div class="filter-tag active">
+                        <i class="fas fa-city"></i> ${cityName}
+                    </div>
+                </div>
+                
+                <div class="cards-container">
+            `;
+            
+            cityData.houses.forEach((house, index) => {
+                html += `
+                    <div class="card house-card">
+                        <img src="${house.image}" alt="${houseType}" class="house-image">
+                        <div class="house-info">
+                            <div class="house-price">${house.rent}</div>
+                            <div class="house-specs">
+                                <span>${house.bhk}</span>
+                                <span>${house.area}</span>
+                                ${house.owner.verified ? '<span style="background:#d4edda; color:#155724;"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+                            </div>
+                            <div class="house-address">
+                                <i class="fas fa-map-marker-alt"></i> ${house.address}
+                            </div>
+                            
+                            <div class="house-owner">
+                                <img src="${house.owner.avatar}" alt="Owner" class="owner-avatar">
+                                <div class="owner-info">
+                                    <h4>${house.owner.name}</h4>
+                                    <p>Property Owner</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-buttons">
+                                <button onclick="contactOwner('${houseType}', '${cityName}', '${house.rent}', '${house.owner.name}', '${house.owner.phone}', '${house.owner.email}', ${index})" 
+                                        class="contact-btn">
+                                    <i class="fas fa-phone-alt"></i> Call Owner
+                                </button>
+                                <button onclick="whatsappOwner('${house.owner.name}', '${house.owner.phone}', '${house.rent}', '${cityName}')" 
+                                        class="contact-btn whatsapp-btn">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            content.innerHTML = html;
+            addToHistory({type: 'houses', houseType, stateName, cityName});
+        }
+        function getTotalProperties(houseType) {
+            let total = 0;
+            const houseData = housesData[houseType];
+            for (const state of Object.values(houseData.states)) {
+                for (const city of Object.values(state.cities)) {
+                    total += city.count;
+                }
+            }
+            return total;
+        }
+        function getPriceRange(houses) {
+            if (houses.length === 0) return 'No prices';
+            const prices = houses.map(h => parseInt(h.rent.replace(/[^0-9]/g, '')));
+            const min = Math.min(...prices);
+            const max = Math.max(...prices);
+            return min === max ? `₹${min}/month` : `₹${min} - ₹${max}/month`;
+        }
+        function contactOwner(houseType, cityName, rent, ownerName, ownerPhone, ownerEmail, index) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 30px;
+                    border-radius: 15px;
+                    max-width: 500px;
+                    width: 90%;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+                ">
+                    <h3 style="margin-bottom: 20px; color: #2d3748; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-phone-alt" style="color: #667eea;"></i> Contact Property Owner
+                    </h3>
+                    <p style="margin-bottom: 20px; color: #4a5568;">
+                        You're contacting <strong>${ownerName}</strong> for a <strong>${houseType}</strong> in <strong>${cityName}</strong>
+                    </p>
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <p style="margin: 0; color: #718096;">
+                            <strong>Owner Details:</strong><br>
+                            Name: ${ownerName}<br>
+                            Phone: <span style="color: #667eea; font-weight: bold;">${ownerPhone}</span><br>
+                            Email: ${ownerEmail}<br>
+                            Rent: <span style="color: #667eea; font-weight: bold;">${rent}</span>
+                        </p>
+                    </div>
+                    <p style="margin-bottom: 20px; color: #718096;">
+                        You can directly call the owner or use WhatsApp for inquiry.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.closest('div').remove()" 
+                                style="flex: 1; padding: 12px; background: #e2e8f0; border: none; border-radius: 10px; cursor: pointer;">
+                            Close
+                        </button>
+                        <button onclick="window.location.href='tel:${ownerPhone}'" 
+                                style="flex: 1; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                       color: white; border: none; border-radius: 10px; cursor: pointer;">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function whatsappOwner(ownerName, ownerPhone, rent, cityName) {
+            const message = `Hello ${ownerName}, I'm interested in your property in ${cityName} for rent ${rent}. Can you please share more details?`;
+            const whatsappUrl = `https://wa.me/91${ownerPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+       
+        function openAddPropertyModal() {
+            document.getElementById('addPropertyModal').style.display = 'flex';
+        }
+
+        function closeAddPropertyModal() {
+            document.getElementById('addPropertyModal').style.display = 'none';
+            document.getElementById('propertyForm').reset();
+        }
+
+        // function addNewProperty(event) {
+        //     event.preventDefault();
+            
+        //     // Get form values
+        //     const propertyType = document.getElementById('propertyType').value;
+        //     const state = document.getElementById('state').value;
+        //     const city = document.getElementById('city').value;
+        //     const address = document.getElementById('address').value;
+        //     const rent = parseInt(document.getElementById('rent').value);
+        //     const bhk = document.getElementById('bhk').value;
+        //     const area = document.getElementById('area').value;
+        //     const ownerName = document.getElementById('ownerName').value;
+        //     const ownerPhone = document.getElementById('ownerPhone').value;
+        //     const ownerEmail = document.getElementById('ownerEmail').value;
+        //     const imageUrl = document.getElementById('imageUrl').value;
+            
+            
+        //     const newHouse = {
+        //         image: imageUrl,
+        //         address: address,
+        //         rent: `₹${rent.toLocaleString()}/month`,
+        //         bhk: bhk,
+        //         area: `${area} sq ft`,
+        //         owner: {
+        //             name: ownerName,
+        //             phone: ownerPhone,
+        //             email: ownerEmail,
+        //             avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(ownerName)}&background=667eea&color=fff&rounded=true`,
+        //             verified: false
+        //         }
+        //     };
+            
+        //     if (!housesData[propertyType]) {
+        //         housesData[propertyType] = { states: {} };
+        //     }
+            
+        //     if (!housesData[propertyType].states[state]) {
+        //         housesData[propertyType].states[state] = { cities: {} };
+        //     }
+            
+        //     if (!housesData[propertyType].states[state].cities[city]) {
+        //         housesData[propertyType].states[state].cities[city] = {
+        //             availability: "high",
+        //             count: 0,
+        //             houses: []
+        //         };
+        //     }
+            
+        //     housesData[propertyType].states[state].cities[city].houses.push(newHouse);
+        //     housesData[propertyType].states[state].cities[city].count++;
+
+        //     alert('✅ Property added successfully! It will be visible after verification.');
+            
+           
+            //closeAddPropertyModal();
+          
+        //     if (currentHouseType === propertyType && currentState === state && currentCity === city) {
+        //         showHousesInCity(propertyType, state, city);
+        //     }
+        // }
+
+        function searchCity() {
+            const searchTerm = document.getElementById('citySearch').value.toLowerCase().trim();
+            if (!searchTerm) return;
+            
+            let found = false;
+    
+            for (const [houseType, houseData] of Object.entries(housesData)) {
+                for (const [stateName, stateData] of Object.entries(houseData.states)) {
+                    for (const [cityName, cityData] of Object.entries(stateData.cities)) {
+                        if (cityName.toLowerCase().includes(searchTerm) || 
+                            stateName.toLowerCase().includes(searchTerm) ||
+                            houseType.toLowerCase().includes(searchTerm)) {
+                            
+                            if (houseType.toLowerCase().includes(searchTerm)) {
+                                showStatesForHouse(houseType);
+                            } else {
+                                showHousesInCity(houseType, stateName, cityName);
+                            }
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+                if (found) break;
+            }
+            
+            if (!found) {
+                const content = document.getElementById('mainContent');
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No Results Found</h3>
+                        <p>We couldn't find any properties matching "${searchTerm}"</p>
+                        <button class="back-btn" onclick="showStatesForHouse('${currentHouseType || 'Apartment'}')">
+                            <i class="fas fa-arrow-left"></i> Back to Browse
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function addToHistory(navData) {
+            navigationHistory.push(navData);
+        }
+
+        document.getElementById('citySearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCity();
+            }
+        });
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('addPropertyModal');
+            if (event.target === modal) {
+                closeAddPropertyModal();
+            }
+        });
+
+        setTimeout(() => {
+            if (!currentHouseType && Object.keys(housesData).length > 0) {
+                const firstHouseType = Object.keys(housesData)[0];
+                currentHouseType = firstHouseType;
+                showStatesForHouse(firstHouseType);
+            }
+        }, 100);
+    </script>
+</body>
+</html>
