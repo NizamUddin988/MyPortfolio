@@ -621,18 +621,18 @@
         function setHouseType(houseName) {
             localStorage.setItem("selectedHouse", houseName);
         }
-        function checkAuth() {
-            const userId = localStorage.getItem("userId");
-            const userName = localStorage.getItem("userFullName") || localStorage.getItem("Name");
-            if (!userId && !userName) {
-                window.location.href = "index.html";
-            }
-        }
+        // function checkAuth() {
+        //     const userId = localStorage.getItem("userId");
+        //     const userName = localStorage.getItem("userFullName") || localStorage.getItem("Name");
+        //     if (!userId && !userName) {
+        //         window.location.href = "index.html";
+        //     }
+        // }
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            checkAuth();
-            await displayUserData();
-        });
+        // window.addEventListener('DOMContentLoaded', async () => {
+        //     checkAuth();
+        //     await displayUserData();
+        // });
         window.setHouseType = setHouseType;
     </script>
 </body>
