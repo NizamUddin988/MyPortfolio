@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="browser.png">
+    <title>House Rental Platform | Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .nav {
+            background: linear-gradient(135deg, #1c1d1d 0%, #35424a 100%);
+            height: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-container {
+            position: relative;
+        }
+
+        #par {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #par:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #details {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #2c3e50;
+            border: 1px solid #34495e;
+            border-radius: 8px;
+            padding: 20px;
+            min-width: 280px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+            background-color: rgba(44, 62, 80, 0.95);
+        }
+
+        #details strong {
+            display: block;
+            color: #ecf0f1;
+            font-size: 15px;
+            margin-bottom: 12px;
+            padding: 8px 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #details strong span {
+            color: #3498db;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        #details strong:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+                        url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 40px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .hero-section h1 {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .house-card {
+            height: 280px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .house-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .house-image {
+            height: 70%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .house-card:hover .house-image {
+            transform: scale(1.05);
+        }
+
+        .house-label {
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: #2c3e50;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .about-section {
+            background-color: #2c3e50;
+            color: white;
+            padding: 60px 20px;
+            margin-top: 60px;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #ecf0f1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .feature {
+            background-color: #34495e;
+            padding: 25px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            background-color: #3d566e;
+        }
+
+        .feature h3 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .feature p {
+            color: #ecf0f1;
+            font-size: 1rem;
+        }
+
+        footer {
+            background-color: #1c1d1d;
+            color: white;
+            padding: 50px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            color: #3498db;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #3498db;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #34495e;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .nav h2 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .house-card {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <h2>🏠 HOUSE RENTAL PLATFORM</h2>
+        <div class="profile-container">
+            <p id="par">👤 Profile ▼</p>
+            <div id="details">
+                <strong id="s1">📛 Name<br> <span id="displayName">Loading...</span></strong>
+                <strong id="s2">📧 Email <span id="displayEmail">Loading...</span></strong>
+                <strong id="s3">📍 Location<br> <span id="displayState">Loading...</span></strong>
+            </div>
+        </div>
+    </div>
+    
+    <div class="hero-section">
+        <h1 class="head">Welcome</h1>
+        <h1>Find Your Perfect Home</h1>
+        <p>Discover a wide range of properties for rent. From cozy apartments to luxurious villas, we have the perfect home for every lifestyle and budget.</p>
+    </div>
+    
+    <div class="container">
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Apartment')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Apartment</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Bungalow')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1711114435495-76503f9f3181?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJ1bmdhbG93fGVufDB8fDB8fHww');"></div>
+                 <div class="house-label">Bungalow</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Cottage')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Cottage</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Duplex')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1560185007-cde436f6a4d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Duplex</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Villa')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Villa</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Mansion')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Mansion</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Farm House')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Farm House</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Row House')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Row House</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Studio House')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Studio House</div>
+            </div>
+        </a>
+        
+        <a href="homepage.html" style="text-decoration: none;">
+            <div class="house-card" onclick="setHouseType('Separate House')">
+                <div class="house-image" style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="house-label">Separate House</div>
+            </div>
+        </a>
+    </div>
+    
+    <div class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About Our Rental Platform</h2>
+                <p>Welcome to the premier destination for finding your perfect rental home. We bridge the gap between tenants and property owners, making the rental process seamless and efficient.</p>
+                <p>With over 10,000 properties listed across the country, we offer diverse options for every need and budget. Our platform is designed with user experience in mind, providing detailed property information, virtual tours, and secure booking processes.</p>
+                <p>Our mission is to simplify house hunting and create meaningful connections between landlords and tenants. We verify all listings to ensure authenticity and provide support throughout your rental journey.</p>
+            </div>
+            <div class="about-features">
+                <div class="feature">
+                    <h3>Verified Listings</h3>
+                    <p>Every property is personally verified by our team to ensure accuracy and authenticity.</p>
+                </div>
+                <div class="feature">
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer support to assist you with any questions or concerns.</p>
+                </div>
+                <div class="feature">
+                    <h3>Secure Payments</h3>
+                    <p>Safe and encrypted payment gateway for all your rental transactions.</p>
+                </div>
+                <div class="feature">
+                    <h3>Legal Assistance</h3>
+                    <p>Expert guidance on rental agreements and legal documentation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Available Houses</h3>
+                <ul>
+                    <li><a href="#">Apartments</a></li>
+                    <li><a href="#">Bungalows</a></li>
+                    <li><a href="#">Cottages</a></li>
+                    <li><a href="#">Duplexes</a></li>
+                    <li><a href="#">Villas</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rental Search</h3>
+                <ul>
+                    <li><a href="#">Browse Houses</a></li>
+                    <li><a href="#">Furnished Apartments</a></li>
+                    <li><a href="#">Pet-Friendly Rentals</a></li>
+                    <li><a href="#">Luxury Villas</a></li>
+                    <li><a href="#">Budget Options</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>For Landlords</h3>
+                <ul>
+                    <li><a href="#">List Your Property</a></li>
+                    <li><a href="#">Property Management</a></li>
+                    <li><a href="#">Pricing Plans</a></li>
+                    <li><a href="#">Landlord Resources</a></li>
+                    <li><a href="#">Legal Guidelines</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><a href="#">Customer Support</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="#">Press Inquiries</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 House Rental Platform. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+    
+    <script>
+        const BACKEND_URL = "https://house-rental-platform-fzj7.onrender.com";
+        async function fetchUserDataFromBackend() {
+            const userId = localStorage.getItem("userId");
+            const userEmail = localStorage.getItem("userEmail");
+    
+            if (userId) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/users/${userId}`);
+                    if (response.ok) {
+                        const userData = await response.json();
+                        if (userData.fullName) {
+                            localStorage.setItem("userFullName", userData.fullName);
+                            localStorage.setItem("Name", userData.fullName);
+                        }
+                        if (userData.email) localStorage.setItem("userEmail", userData.email);
+                        if (userData.location || userData.state) {
+                            const location = userData.location || userData.state;
+                            localStorage.setItem("States", location);
+                        }
+                        return userData;
+                    }
+                } catch (error) {
+                    console.warn("Could not fetch full user profile", error);
+                }
+            }
+            
+            if (userEmail) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/users?email=${encodeURIComponent(userEmail)}`);
+                    if (response.ok) {
+                        const users = await response.json();
+                        if (users && users.length > 0) {
+                            const userData = users[0];
+                            if (userData.fullName) localStorage.setItem("userFullName", userData.fullName);
+                            if (userData.location || userData.state) {
+                                localStorage.setItem("States", userData.location || userData.state);
+                            }
+                            return userData;
+                        }
+                    }
+                } catch (error) {
+                    console.warn("Could not fetch user by email", error);
+                }
+            }
+            return null;
+        }
+        const fullName="Guest";
+        const email="guest2345@gmail.com"
+        const state="Karnataka"
+        async function displayUserData() {
+            // await fetchUserDataFromBackend();
+            // const fullName = localStorage.getItem("userFullName") || localStorage.getItem("Name") || "Guest";
+            // const email = localStorage.getItem("userEmail") || "Not provided";
+            // const state = localStorage.getItem("States") || "Not set";
+            const headerElement = document.querySelector("h1.head");
+            if (headerElement) {
+                headerElement.textContent = `Welcome, ${fullName.split(' ')[0] || fullName}!`;
+            }
+        
+            document.getElementById("displayName").textContent = fullName;
+            document.getElementById("displayEmail").textContent = email;
+            document.getElementById("displayState").textContent = state;
+        }
+        
+        const par = document.getElementById("par");
+        const details = document.getElementById("details");
+        
+        par.addEventListener("click", function(e) {
+            e.stopPropagation();
+            details.style.display = details.style.display === "block" ? "none" : "block";
+            par.innerHTML = details.style.display === "block" ? "👤 Profile ▲" : "👤 Profile ▼";
+        });
+        
+        document.addEventListener("click", function(e) {
+            if (!par.contains(e.target) && !details.contains(e.target)) {
+                details.style.display = "none";
+                par.innerHTML = "👤 Profile ▼";
+            }
+        });
+    
+        function setHouseType(houseName) {
+            localStorage.setItem("selectedHouse", houseName);
+        }
+        function checkAuth() {
+            const userId = localStorage.getItem("userId");
+            const userName = localStorage.getItem("userFullName") || localStorage.getItem("Name");
+            if (!userId && !userName) {
+                window.location.href = "index.html";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            checkAuth();
+            await displayUserData();
+        });
+        window.setHouseType = setHouseType;
+    </script>
+</body>
+</html>
