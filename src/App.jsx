@@ -708,6 +708,9 @@ function App() {
               </svg>
             </a>
           </div>
+           <small>
+    © {new Date().getFullYear()} Nizam Uddin. All rights reserved.
+  </small>
         </footer>
       </div>
     </>
