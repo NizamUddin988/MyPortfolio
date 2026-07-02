@@ -1998,6 +1998,13 @@ footer h3 {
 .contact-item a:hover {
   color: #fdbb2d;
 }
+footer small {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #bdbdbd;
+  text-align: center;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
