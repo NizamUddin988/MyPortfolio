@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import { RiVoiceAiFill } from "react-icons/ri";
 
 const TypewriterText = ({ text, delay = 0, speed = 60, className = '', tag: Tag = 'span', onDone }) => {
   const [displayed, setDisplayed] = useState('');
@@ -31,6 +32,8 @@ const TypewriterText = ({ text, delay = 0, speed = 60, className = '', tag: Tag 
     </Tag>
   );
 };
+
+//Skills
 const SkillBubble = ({ skill, index, total }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -104,7 +107,7 @@ const SkillBubble = ({ skill, index, total }) => {
       'Railway': 'linear-gradient(90deg, #000000, #434343)',
       'JDBC': 'linear-gradient(135deg, #007396, #00a8ff)'
     };
-    return colors[name] || `linear-gradient(135deg, #6e57e0, #4a33c0)`;
+    return colors[name] || `linear-gradient(135deg, #ff6f3c, #c1440e)`;
   };
   
   return (
@@ -148,7 +151,6 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
-    // Animation observers
     const containerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -210,7 +212,7 @@ function App() {
     { name: "Vercel", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg", category: "tools", level: "Advanced" },
     { name: "Netlify", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/netlify/netlify-original.svg", category: "tools", level: "Advanced" },
     { name: "Maven", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apache/apache-original.svg", category: "tools", level: "Intermediate" },
-    { name: "Render", icon: "data:image/png;base64,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", category: "tools", level: "Intermediate" },
+    { name: "Render", icon: "data:image/png;base64,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", category: "tools", level: "Intermediate" },
     { name: "Railway", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/railway/railway-original.svg", category: "tools", level: "Intermediate" }
   ];
   
@@ -219,6 +221,7 @@ function App() {
     return allSkills.filter(skill => skill.category === selectedCategory);
   };
 
+ //gallery
   const galleryImages = [
     { id: 1, src: "https://wallpapercave.com/wp/wp7250087.jpg", title: "Efficient Coder", desc: "Deep focus while solving complex problems"},
     { id: 2, src: "/images/1.png", title: "Project Work", desc: "Working on a full-stack application" },
@@ -228,6 +231,7 @@ function App() {
     { id: 6, src: "/images/5.png", title: "Goals", desc: "Presenting My Life" }
   ];
 
+  //certificates
   const certificates = [
     {id:  1, title:"Fullstack development using Java and Python", issuer:"Vstan4U Technolgies", desc:"Full-Stack Certification", filePath: "/certificates/intern.jpeg"},
     { id: 2, title: "Java Completion Course", issuer: "Intellipaat", desc: "Java Certification", filePath: "/certificates/intellipad.jpeg" },
@@ -240,6 +244,7 @@ function App() {
     { id: 9, title: "Java & SQL" , issuer:"Vstan4U Technolgies",desc:"Coding Certificate",filePath:"/certificates/vs4u.png"}
   ];
 
+//projects
   const projects = [
     {
       id: 1,
@@ -293,60 +298,84 @@ function App() {
 
   const filteredSkills = getFilteredSkills();
 
-  // Likes Logic
-  const [likes, setLikes] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const fetchLikes = async () => {
-    try {
-      const response = await fetch('/api/likes');
-      const data = await response.json();
-      setLikes(data.count || 0);
-    } catch (error) {
-      console.error('Error fetching likes:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const like = async () => {
-    if (liked || loading) return;
-
-    try {
-      setLoading(true);
-      setLiked(true);
-      setLikes(prev => prev + 1);
-      localStorage.setItem('portfolio_liked', 'true');
-
-      const response = await fetch('/api/likes', { method: 'POST' });
-      const data = await response.json();
-
-      if (!response.ok) throw new Error();
-      setLikes(data.count);
-    } catch (error) {
-      console.error('Error liking:', error);
-      setLiked(false);
-      setLikes(prev => prev - 1);
-      localStorage.removeItem('portfolio_liked');
-      alert('Failed to like. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [greetingDone, setGreetingDone] = useState(false);
+  const audioRef = useRef(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const wasPlayingBeforeHiddenRef = useRef(false);
 
   useEffect(() => {
-    fetchLikes();
-    const hasLiked = localStorage.getItem('portfolio_liked');
-    if (hasLiked === 'true') {
-      setLiked(true);
-    }
-  }, []);
-  
-  const [greetingDone, setGreetingDone] = useState(false);
+    const audio = audioRef.current;
+    if (!audio) return;
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
 
-  return (
+        wasPlayingBeforeHiddenRef.current = !audio.paused;
+        audio.pause();
+        setIsMusicPlaying(false);
+      } else if (wasPlayingBeforeHiddenRef.current) {
+        audio.play()
+      .then(() => setIsMusicPlaying(true))
+      }
+    };
+ 
+    // pause if the page is closed.
+    const handlePageHide = () => {
+      audio.pause();
+      setIsMusicPlaying(false);
+    };
+ 
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("beforeunload", handlePageHide);
+ 
+    return () => {
+     document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
+      window.removeEventListener("beforeunload", handlePageHide);
+    };
+  }, []);
+ 
+  const toggleMusic = () => {
+  const audio = audioRef.current;
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play()
+      .then(() => setIsMusicPlaying(true))
+      .catch(console.error);
+  } else {
+    audio.pause();
+    setIsMusicPlaying(false);
+  }
+};
+
+return(
     <>
+     <audio
+        ref={audioRef}
+      src="/audio/voice.mp3"
+        preload="auto"
+      />
+
+      <button
+        className={`music-toggle ${isMusicPlaying ? "playing" : ""}`}
+        onClick={toggleMusic}
+        aria-label={isMusicPlaying ? "Pause AI introduction" : "Play AI introduction"}
+        title={isMusicPlaying ? "Pause AI Introduction" : "Listen to AI Introduction"}
+      >
+        {isMusicPlaying ? (
+          <div className="music-bars">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        ) : (
+          <RiVoiceAiFill size={26} />
+        )}
+      </button>
+
       <div className="nav">
         <div className="nav-container">
           <h1>MyPortfolio</h1>
@@ -374,7 +403,7 @@ function App() {
         <div className="hero-section" id="home">
           <div className="hero-container">
             <div className="hero-text"><h1 style={{
-             background: 'linear-gradient(135deg, #6e57e0, #fdbb2d, #ff6b6b)',
+             background: 'linear-gradient(135deg, #ff6f3c, #2dd4bf, #ff5e5b)',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   backgroundClip: 'text',
@@ -389,7 +418,7 @@ function App() {
               /></h1>
               <h2 id="dev">
                 <span style={{
-                  background: 'linear-gradient(135deg, #6e57e0, #fdbb2d, #ff6b6b)',
+                  background: 'linear-gradient(135deg, #ff6f3c, #2dd4bf, #ff5e5b)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -418,32 +447,9 @@ function App() {
               
               <div className="hero-image">
                 <div className='me'>
-                  <img src="./Developer.png" alt="Developer" className='img' />
+                  <img src="./developer.png" alt="Developer" className='img' />
                 </div>
               </div>
-{/* 
-              <button 
-                onClick={like} 
-                style={{
-                  height: "clamp(36px, 6vw, 50px)",
-                  width: "clamp(90px, 22vw, 120px)",
-                  fontSize: "clamp(14px, 2.5vw, 20px)",   
-                  background: liked ? "#888" : "#e74c3c",
-                  fontWeight: 600,
-                  color: 'white',
-                  textAlign: "center",
-                  border: "2px solid white",
-                  borderRadius: "1em",
-                  position: "fixed",
-                  top: "4rem",
-                  right: "0.5rem",
-                  zIndex: "1000",
-                  cursor: liked ? "default" : "pointer",
-                  transition: "all 0.3s ease"
-                }}
-              >
-                {liked ? "❤️" : "🤍"} {likes}
-              </button>    */}
               <div className="scroll">↓ Scroll Down ↓</div>
             </div>
           </div>
